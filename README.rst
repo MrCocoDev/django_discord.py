@@ -137,6 +137,16 @@ Don't forget to tell your contributors to also install and use pre-commit.
 
 .. _pre-commit: https://pre-commit.com/
 
+
+Extending The Server For Your Own Needs
+=======================================
+
+Obviously, you will want your bot to do more than just respond to `?hi`. To extend this bot
+you can set **DJANGO_SETTINGS_MODULE** in your environment to your own settings file. From
+there you will have all the normal controls over Django that you're used to.
+
+For ease-of-use you can see **.env.example** for a list of import environment variables.
+
 Note
 ====
 
