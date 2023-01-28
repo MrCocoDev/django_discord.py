@@ -1,0 +1,4 @@
+import os
+
+DISCORD_BOT_TOKEN = os.getenv('DISCORD_BOT_TOKEN', 'SET_THIS')
+DISCORD_PY_COMMAND_PREFEX = "?"

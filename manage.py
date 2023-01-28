@@ -6,7 +6,7 @@ the installation of the package without the need of copying the source code.
 Because of that ``pyscaffoldext-django`` moves the generated ``manage.py`` file
 to become the package's ``__main__.py`` file. This way all the commands that
 could be run before as ``python3 manage.py <COMMAND>`` can now be run as
-``python3 -m django_discord.django_discord_py <COMMAND>``, in a straight forward fashion just after
+``python3 -m django_discord.py <COMMAND>``, in a straight forward fashion just after
 a ``pip3 install``.
 
 This file is a executable stub that simply calls ``__main__.py:main()`` for
@@ -21,6 +21,6 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src
 
 
 if __name__ == "__main__":
-    from django_discord.django_discord_py.__main__ import main
+    from django_discord.py.configuration.__main__ import main
 
     main()
