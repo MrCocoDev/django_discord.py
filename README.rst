@@ -55,6 +55,13 @@ you may be used to running `python manage.py <command>`. For this project you wi
 If you don't want this you can also install this package as normal and import the parts you want
 to use in your django project.
 
+
+Prerequisites
+=============
+
+By default this project requires Redis. Find installation instructions for you system at their site: https://redis.com
+
+
 Installation
 ============
 
