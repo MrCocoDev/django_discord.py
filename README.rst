@@ -126,6 +126,38 @@ Using the module directly
 
 .. _pyscaffold-notes:
 
+
+More Advanced Usage
+===================
+
+::
+
+    export DJANGO_SETTINGS_MODULE='path.to.your.settings'
+
+    # path.to.your.settings.py
+    from from django_discord.py.configuration.common_components.base import INSTALLED_APPS
+    DISCORD_BOT_PATH = 'path.to.your.discord.bot.definition'
+    INSTALLED_APPS = [
+        *INSTALLED_APPS,
+        'your_django_app',
+    ]
+
+Doing this will allow you to fully configure the Django application. You can also
+set up a django project normally and do:
+
+::
+
+    # path.to.your.settings.py
+    DISCORD_BOT_PATH = 'path.to.your.discord.bot.definition'
+    INSTALLED_APPS = [
+        ...,
+        'django_discord.py.bot',
+        ...,
+    ]
+
+But you will be responsible for starting the `channels` workers yourself.
+
+
 Making Changes & Contributing
 =============================
 
