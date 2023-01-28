@@ -17,7 +17,7 @@ def run_daphne_server(ip_address, ip_port):
 
 
 def run_asgi_workers(*channels):
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_discord.py.configuration.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_discord.py.configuration.worker_settings")
 
     if not channels:
         channels = ('discord_bot', )

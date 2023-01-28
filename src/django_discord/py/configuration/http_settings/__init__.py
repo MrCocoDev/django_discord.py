@@ -1,8 +1,7 @@
 from split_settings.tools import include, optional
 
 include(
-    "components/base.py",
-    "components/channels.py",
-    "components/discord.py",
+    "../common_components/base.py",
+    "../common_components/channels.py",
     optional("components/local_settings.py"),
 )
