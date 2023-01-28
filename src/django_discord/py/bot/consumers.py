@@ -11,13 +11,15 @@ from django.conf import settings
 
 
 class BaseDiscordConsumer(AsyncConsumer):
-    running: bool = False
     bot_task: asyncio.Task = None
 
-    def start_discord_bot(self, event):
-        if self.running:
+    async def start_discord_bot(self, event):
+        print("Received start signal")
+        if self.is_bot_running():
+            print("Bot is already running, doing nothing")
             return
 
+        print("Unpacking signal for bot parameters")
         bot_path = event['bot_path']
         reconnect: bool = event['reconnect']
         log_handler: Optional[logging.Handler] = event.get('log_handler', MISSING)
@@ -25,10 +27,13 @@ class BaseDiscordConsumer(AsyncConsumer):
         log_level: int = event.get('log_level', MISSING)
         root_logger: bool = event.get('root_logger', False)
 
+        print(f"Importing '{bot_path}' ...")
         bot: Bot = import_by_path(bot_path)
+
+        print("Grabbing bot auth token from settings")
         bot_token: str = settings.DISCORD_PY_BOT_TOKEN
 
-        async def runner():
+        async def runner(bot, bot_token, reconnect):
             async with bot:
                 await bot.start(bot_token, reconnect=reconnect)
 
@@ -40,7 +45,13 @@ class BaseDiscordConsumer(AsyncConsumer):
                 root=root_logger,
             )
 
-        self.bot_task = asyncio.create_task(runner())
+        print("Creating bot loop")
+        bot_coro = runner(bot, bot_token, reconnect)
+        print("Running bot")
+        await bot_coro
 
     def is_bot_running(self):
+        if not self.bot_task:
+            return False
+
         return not self.bot_task.done() and not self.bot_task.cancelled()
