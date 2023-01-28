@@ -22,6 +22,7 @@ class BaseDiscordConsumer(AsyncConsumer):
         print("Unpacking signal for bot parameters")
         bot_path = event['bot_path']
         reconnect: bool = event['reconnect']
+
         log_handler: Optional[logging.Handler] = event.get('log_handler', MISSING)
         log_formatter: logging.Formatter = event.get('log_formatter', MISSING)
         log_level: int = event.get('log_level', MISSING)
@@ -48,7 +49,7 @@ class BaseDiscordConsumer(AsyncConsumer):
         print("Creating bot loop")
         bot_coro = runner(bot, bot_token, reconnect)
         print("Running bot")
-        await bot_coro
+        self.bot_task = asyncio.create_task(bot_coro)
 
     def is_bot_running(self):
         if not self.bot_task:

@@ -11,16 +11,25 @@ class DjangoDiscordPyBotAutoStartConfig(AppConfig):
     def ready(self):
         channel_layer = get_channel_layer()
         print("Sending start signal")
+
+        logging_config = {
+            config_key: getattr(settings, config_setting)
+            for config_key, config_setting
+            in [
+                ("log_handler", 'DISCORD_BOT_LOG_HANDLER', ),
+                ("log_formatter", 'DISCORD_BOT_LOG_FORMATTER', ),
+                ("log_level", 'DISCORD_BOT_LOG_LEVEL', ),
+                ("root_logger", 'DISCORD_BOT_ROOT_LOGGER', ),
+            ]
+            if hasattr(settings, config_setting)
+        }
         async_to_sync(channel_layer.send)(
             "discord_bot",
             {
                 "type": "start.discord.bot",
                 "bot_path": settings.DISCORD_BOT_PATH,
                 "reconnect": settings.DISCORD_BOT_RECONNECT,
-                "log_handler": settings.DISCORD_BOT_LOG_HANDLER,
-                "log_formatter": settings.DISCORD_BOT_LOG_FORMATTER,
-                "log_level": settings.DISCORD_BOT_LOG_LEVEL,
-                "root_logger": settings.DISCORD_BOT_ROOT_LOGGER,
+                **logging_config,
             }
         )
         print("Start signal sent")
