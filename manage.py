@@ -21,6 +21,6 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src
 
 
 if __name__ == "__main__":
-    from django_discord.py.configuration.__main__ import main
+    from django_discord.py.__main__ import main
 
     main()

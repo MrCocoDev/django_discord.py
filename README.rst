@@ -34,10 +34,87 @@ django-discord-py
 =================
 
 
-    Add a short description here!
+    An easy-to-use, easy-to-start with Discord.py bot with Django built right in.
 
 
-A longer description of your project goes here...
+Discord bots are really cool, and Django provides a lot of functionality for free. For a lot of developers
+this project may be too heavy weight to make sense. However, if you're used to Django and want to start
+writing Discord bots then this should be a great place for you to start.
+
+
+Important Notes Before We Get Started
+=====================================
+
+If you're new to developing django or have never installed a django server as a package before
+you may be used to running `python manage.py <command>`. For this project you will instead run
+
+::
+
+  python -m django_discord.py <command>
+
+If you don't want this you can also install this package as normal and import the parts you want
+to use in your django project.
+
+Installation
+============
+
+We recommend installing from PIP
+
+::
+
+  pip install --upgrade django_discord_py
+
+If you want to install from source
+
+::
+
+  git clone <this_repo>
+  cd <this_repo>
+  pip install -e "."
+
+
+Basic Bot Usage
+===============
+
+Using the console_scripts entrypoint
+
+::
+
+  python3 -m venv your_venv
+  source your_venv/bin/activate
+  pip install --upgrade django_discord_py
+  discord_bot
+
+Using the module directly
+
+::
+
+  python3 -m venv your_venv
+  source your_venv/bin/activate
+  pip install --upgrade django_discord_py
+  python -m django_discord.py.entrypoints.channels_entrypoint
+
+
+Basic Django Server Usage
+=========================
+
+Using the console_scripts entrypoint
+
+::
+
+  python3 -m venv your_venv
+  source your_venv/bin/activate
+  pip install --upgrade django_discord_py
+  django_server
+
+Using the module directly
+
+::
+
+  python3 -m venv your_venv
+  source your_venv/bin/activate
+  pip install --upgrade django_discord_py
+  python -m django_discord.py.entrypoints.http_entrypoint
 
 
 .. _pyscaffold-notes:
