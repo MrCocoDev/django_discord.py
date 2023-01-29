@@ -50,7 +50,7 @@ you may be used to running `python manage.py <command>`. For this project you wi
 
 ::
 
-  python -m django_discord.py <command>
+  django-discord.py <command>
 
 If you don't want this you can also install this package as normal and import the parts you want
 to use in your django project.
@@ -90,7 +90,7 @@ Using the console_scripts entrypoint
   python3 -m venv your_venv
   source your_venv/bin/activate
   pip install --upgrade django_discord_py
-  discord_bot
+  discord-bot
 
 Using the module directly
 
@@ -112,7 +112,7 @@ Using the console_scripts entrypoint
   python3 -m venv your_venv
   source your_venv/bin/activate
   pip install --upgrade django_discord_py
-  django_server
+  django-server
 
 Using the module directly
 
