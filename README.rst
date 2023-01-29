@@ -158,6 +158,46 @@ set up a django project normally and do:
 But you will be responsible for starting the `channels` workers yourself.
 
 
+Sending Your First Discord Bot Message
+======================================
+
+Add the bot to your discord server. Then launch the bot process using the instructinos above.
+In a separate shell run
+
+::
+
+    # sh
+    python -m django_discord.py shell_plus
+
+This will launch an `IPython` shell with Django initialized.
+
+In your discord server say "Hi!" to the bot:
+
+::
+
+    # discord
+    ?hi
+
+The bot will respond with the channel ID for the current channel. Copy the ID without the `#` and
+run the following in your `IPython` shell:
+
+::
+
+    from channels.layers import get_channel_layer
+    channel_layer = get_channel_layer()
+    await channel_layer.send('discord_bot', {'type': 'send.message', 'channel': COPY_FROM_DISCORD, 'content': 'This is cool!'})
+
+
+Extending The Server For Your Own Needs
+=======================================
+
+Obviously, you will want your bot to do more than just respond to `?hi`. To extend this bot
+you can set **DJANGO_SETTINGS_MODULE** in your environment to your own settings file. From
+there you will have all the normal controls over Django that you're used to.
+
+For ease-of-use you can see **.env.example** for a list of import environment variables.
+
+
 Making Changes & Contributing
 =============================
 
@@ -176,15 +216,6 @@ Don't forget to tell your contributors to also install and use pre-commit.
 
 .. _pre-commit: https://pre-commit.com/
 
-
-Extending The Server For Your Own Needs
-=======================================
-
-Obviously, you will want your bot to do more than just respond to `?hi`. To extend this bot
-you can set **DJANGO_SETTINGS_MODULE** in your environment to your own settings file. From
-there you will have all the normal controls over Django that you're used to.
-
-For ease-of-use you can see **.env.example** for a list of import environment variables.
 
 Note
 ====

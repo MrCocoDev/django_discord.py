@@ -1,10 +1,6 @@
+from django_discord.py.configuration.common_components.base import INSTALLED_APPS
+
 INSTALLED_APPS = [
-    "channels",
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
+    *INSTALLED_APPS,
     "django_discord.py.bot",
 ]

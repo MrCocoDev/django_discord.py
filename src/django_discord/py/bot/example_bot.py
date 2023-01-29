@@ -39,5 +39,5 @@ async def on_ready():
 async def hi(ctx: Context):
     print("Someone said 'Hi', responding!")
     await ctx.send(
-        "Hello, world!"
+        f"Hello, channel #{ctx.channel.id}!"
     )

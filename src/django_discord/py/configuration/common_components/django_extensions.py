@@ -1,0 +1,1 @@
+SHELL_PLUS = 'ipython'
