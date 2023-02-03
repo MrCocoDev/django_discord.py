@@ -1,5 +1,6 @@
 import asyncio
 import logging
+from importlib import import_module
 from typing import Optional
 
 from channels.consumer import AsyncConsumer
@@ -8,6 +9,9 @@ from discord import utils
 from discord.ext.commands import Bot
 from discord.utils import MISSING
 from django.conf import settings
+from loguru import logger
+
+from django_discord.py.plugins.apply import apply_plugin
 
 
 class BaseDiscordConsumer(AsyncConsumer):
@@ -15,12 +19,12 @@ class BaseDiscordConsumer(AsyncConsumer):
     bot: Bot = None
 
     async def start_discord_bot(self, event):
-        print("Received start signal")
+        logger.info("Received start signal")
         if await self.is_bot_running():
-            print("Bot is already running, doing nothing")
+            logger.info("Bot is already running, doing nothing")
             return
 
-        print("Unpacking signal for bot parameters")
+        logger.info("Unpacking signal for bot parameters")
         bot_path = event['bot_path']
         reconnect: bool = event['reconnect']
 
@@ -29,10 +33,10 @@ class BaseDiscordConsumer(AsyncConsumer):
         log_level: int = event.get('log_level', MISSING)
         root_logger: bool = event.get('root_logger', False)
 
-        print(f"Importing '{bot_path}' ...")
+        logger.info(f"Importing '{bot_path}' ...")
         self.bot: Bot = import_by_path(bot_path)
 
-        print("Grabbing bot auth token from settings")
+        logger.info("Grabbing bot auth token from settings")
         bot_token: str = settings.DISCORD_PY_BOT_TOKEN
 
         async def runner(bot, token, reconnect):
@@ -46,10 +50,20 @@ class BaseDiscordConsumer(AsyncConsumer):
                 level=log_level,
                 root=root_logger,
             )
+        logger.info("Loading plugins")
+        plugin_paths = event.get('plugins', [])
+        for plugin_path in plugin_paths:
+            module = import_module(plugin_path)
+            plugin = getattr(module, 'plugin')
+            if not plugin:
+                logger.error("Improperly configured plugin module found %s. Where is the `plugin` attribute?", module)
+                continue
+            apply_plugin(self.bot, plugin)
 
-        print("Creating bot loop")
+        logger.info("Creating bot loop")
         bot_coro = runner(self.bot, bot_token, reconnect)
-        print("Running bot")
+
+        logger.info("Running bot")
         self.bot_task = asyncio.create_task(bot_coro)
 
     async def is_bot_running(self):

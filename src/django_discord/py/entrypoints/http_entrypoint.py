@@ -1,5 +1,7 @@
 import sys
 
+from loguru import logger
+
 from django_discord.py.cli import run_daphne_server
 
 if __name__ == "__main__":
@@ -15,7 +17,7 @@ if __name__ == "__main__":
             pass
 
     except Exception as e:
-        print(f"We did not understand that, sorry! Here was the error: {e}")
+        logger.error(f"We did not understand that, sorry! Here was the error: {e}")
         sys.exit(1)
 
     run_daphne_server(ip_address, port)

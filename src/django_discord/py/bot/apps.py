@@ -2,6 +2,7 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.apps import AppConfig
 from django.conf import settings
+from loguru import logger
 
 
 class DjangoDiscordPyBotAutoStartConfig(AppConfig):
@@ -10,7 +11,7 @@ class DjangoDiscordPyBotAutoStartConfig(AppConfig):
 
     def ready(self):
         channel_layer = get_channel_layer()
-        print("Sending start signal")
+        logger.info("Sending start signal")
 
         logging_config = {
             config_key: getattr(settings, config_setting)
@@ -27,9 +28,10 @@ class DjangoDiscordPyBotAutoStartConfig(AppConfig):
             "discord_bot",
             {
                 "type": "start.discord.bot",
+                'plugins': settings.DISCORD_BOT_PLUGINS,
                 "bot_path": settings.DISCORD_BOT_PATH,
                 "reconnect": settings.DISCORD_BOT_RECONNECT,
                 **logging_config,
             }
         )
-        print("Start signal sent")
+        logger.info("Start signal sent")
