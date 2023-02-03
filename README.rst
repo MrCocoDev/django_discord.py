@@ -198,6 +198,36 @@ there you will have all the normal controls over Django that you're used to.
 For ease-of-use you can see **.env.example** for a list of import environment variables.
 
 
+Using the plugin system
+=======================
+
+You can add your commands to the discord bot via plugins! To do this set:
+
+::
+
+   # settings.py
+
+   DISCORD_BOT_PLUGINS = [
+      'django_discord.py.example_bot.bot_plugins',
+   ]
+
+Plugin files are loaded _after_ django settings so it is safe to access the database at the module
+level. A basic plugin might look like this:
+
+::
+
+   from discord.ext.commands import Context
+   from django_discord.py.plugins.datatypes import DjangoDiscordPlugin
+
+   plugin = DjangoDiscordPlugin()
+
+   @plugin.command(description="Say 'Hello, world!'")
+   async def howdy(ctx: Context):
+       await ctx.send(
+           f"Howdy, channel #{ctx.channel.id}! 🤠"
+       )
+
+
 Making Changes & Contributing
 =============================
 
