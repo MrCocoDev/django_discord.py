@@ -64,6 +64,9 @@ class BaseDiscordConsumer(AsyncConsumer):
                 await module.setup(self.bot)
             except AttributeError:
                 pass
+            except TypeError:
+                logger.error("%s.setup should be an async function!", module)
+                raise
 
         logger.info("Creating bot loop")
         bot_coro = runner(self.bot, bot_token, reconnect)
