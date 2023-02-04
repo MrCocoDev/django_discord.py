@@ -9,7 +9,7 @@ plugin = DjangoDiscordPlugin()
 log = logging.getLogger(__name__)
 
 
-@plugin.command(description="Say 'Hello, world!'")
+@plugin.bot.command(description="Say 'Hello, world!'")
 async def howdy(ctx: Context):
     log.info("Someone said 'Howdy', responding!")
     await ctx.send(

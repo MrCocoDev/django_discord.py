@@ -12,6 +12,7 @@ from django.conf import settings
 from loguru import logger
 
 from django_discord.py.plugins.apply import apply_plugin
+from django_discord.py.plugins.datatypes import DjangoDiscordPlugin
 
 
 class BaseDiscordConsumer(AsyncConsumer):
@@ -52,6 +53,8 @@ class BaseDiscordConsumer(AsyncConsumer):
             )
         logger.info("Loading plugins")
         plugin_paths = event.get('plugins', [])
+        DjangoDiscordPlugin.bot_proxy = self.bot
+
         for plugin_path in plugin_paths:
             module = import_module(plugin_path)
             plugin = getattr(module, 'plugin')

@@ -221,7 +221,7 @@ level. A basic plugin might look like this:
 
    plugin = DjangoDiscordPlugin()
 
-   @plugin.command(description="Say 'Hello, world!'")
+   @plugin.bot.command(description="Say 'Hello, world!'")
    async def howdy(ctx: Context):
        await ctx.send(
            f"Howdy, channel #{ctx.channel.id}! 🤠"

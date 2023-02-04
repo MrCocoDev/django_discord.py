@@ -1,28 +1,16 @@
-import dataclasses
-from typing import Callable
+from typing import ClassVar
+
+from django_discord.py.exceptions import BotNotReadyYet
 
 
 class DjangoDiscordPlugin:
     command_definitions = []
 
-    def command(self, function=None, /, *args, **kwargs):
-        def decorator(func):
-            self.command_definitions.append(
-                CommandDefinition(
-                    callable=func,
-                    args=args,
-                    kwargs=kwargs,
-                )
-            )
+    bot_proxy: ClassVar
 
-        if function:
-            return decorator(function)
-        else:
-            return decorator
-
-
-@dataclasses.dataclass
-class CommandDefinition:
-    callable: Callable
-    args: tuple
-    kwargs: dict
+    @property
+    def bot(self):
+        the_bot = type(self).bot_proxy
+        if not the_bot:
+            raise BotNotReadyYet("The bot isn't ready yet! Have you started the bot?")
+        return the_bot
