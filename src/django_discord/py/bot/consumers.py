@@ -11,7 +11,6 @@ from discord.utils import MISSING
 from django.conf import settings
 from loguru import logger
 
-from django_discord.py.plugins.apply import apply_plugin
 from django_discord.py.plugins.datatypes import DjangoDiscordPlugin
 
 
@@ -51,17 +50,20 @@ class BaseDiscordConsumer(AsyncConsumer):
                 level=log_level,
                 root=root_logger,
             )
+
         logger.info("Loading plugins")
         plugin_paths = event.get('plugins', [])
         DjangoDiscordPlugin.bot_proxy = self.bot
-
         for plugin_path in plugin_paths:
             module = import_module(plugin_path)
             plugin = getattr(module, 'plugin')
             if not plugin:
                 logger.error("Improperly configured plugin module found %s. Where is the `plugin` attribute?", module)
-                continue
-            apply_plugin(self.bot, plugin)
+
+            try:
+                await module.setup(self.bot)
+            except AttributeError:
+                pass
 
         logger.info("Creating bot loop")
         bot_coro = runner(self.bot, bot_token, reconnect)
