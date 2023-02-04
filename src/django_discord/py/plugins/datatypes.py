@@ -6,7 +6,7 @@ from django_discord.py.exceptions import BotNotReadyYet
 class DjangoDiscordPlugin:
     command_definitions = []
 
-    bot_proxy: ClassVar
+    bot_proxy: ClassVar = None
 
     @property
     def bot(self):
