@@ -227,6 +227,12 @@ level. A basic plugin might look like this:
            f"Howdy, channel #{ctx.channel.id}! 🤠"
        )
 
+See the example plugin for more hooks and tips:
+
+::
+
+   django_discord.py.example_bot.bot_plugins
+
 
 Making Changes & Contributing
 =============================
