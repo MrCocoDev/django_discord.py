@@ -31,7 +31,7 @@ async def on_command_error(ctx: Context, error):
 @bot.event
 async def on_error(event_method: str, /, *args: Any, **kwargs: Any):
     log.bind(**{'event_method': event_method, 'args': args, 'kwargs': kwargs}).error("Discord bot had an error!")
-    bot_error.send_robust(sender=bot.__class__, event_method=event_method, args=args, kwargs=kwargs)
+    bot_error.send_robust(sender=bot.__class__, event_method=event_method, event_args=args, event_kwargs=kwargs)
 
 
 @bot.event

@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from typing import Optional, Union
 
@@ -32,22 +33,23 @@ def my_handler(sender, bot: Bot, **kwargs):
 
 
 @receiver(command_error, sender=Bot)
-def on_command_error(sender, bot: Bot, event_method: str, args, kwargs):
+def on_command_error(sender, bot: Bot, ctx: Context, error: Exception, **kwargs):
+    """
+    Add your bot error handling code here!
+    """
+    asyncio.ensure_future(ctx.send(f"Something went wrong! {error}"))
+
+
+@receiver(bot_error, sender=Bot)
+def on_error(sender, bot: Bot, event_method: str, event_args, event_kwargs, **kwargs):
     """
     Add your server error handling code here!
     """
 
 
-@receiver(bot_error, sender=Bot)
-def on_error(sender, bot: Bot, ctx: Context, error: Exception, **kwargs, ):
-    """
-    Add your bot error handling code here!
-    """
-    await ctx.send(f"Something went wrong! {error}")
-
-
 @plugin.bot.command(description="Sync commands to servers")
 async def sync(ctx: Context):
+    plugin.bot.tree.copy_global_to(guild=discord.Object(id=ctx.guild.id))
     await plugin.bot.tree.sync(guild=discord.Object(id=ctx.guild.id))
     await ctx.send(
         "Syncing commands now!"
