@@ -57,3 +57,9 @@ repos:
   rev: 'v2.0.1'  # Use the sha / tag you want to point at
   hooks:
   - id: autopep8
+
+- repo: https://github.com/charliermarsh/ruff-pre-commit
+  # Ruff version.
+  rev: 'v0.0.253'
+  hooks:
+    - id: ruff
