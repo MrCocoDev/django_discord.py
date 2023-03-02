@@ -8,9 +8,7 @@ from loguru import logger
 
 from django_discord.py.bot.signals import bot_error, bot_ready, command_error
 
-description = """
-A bot for friendly betting on league of legends
-"""
+description = settings.DISCORD_BOT_DESCRIPTION
 
 intents = discord.Intents.default()
 intents.message_content = True
