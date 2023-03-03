@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 
 from loguru import logger
@@ -10,7 +11,12 @@ include(
     "../common_components/channels.py",
     "components/discord.py",
     "../common_components/django_extensions.py",
-    optional("components/local_settings.py"),
+    optional(
+        os.getenv(
+            "DJANGO_DISCORD_PY_BOT_LOCAL_SETTINGS",
+            "components/local_settings.py",
+        ),
+    ),
 )
 
 
