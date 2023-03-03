@@ -5,6 +5,7 @@ from typing import Optional, Union
 import discord
 from discord import Interaction, app_commands
 from discord.ext.commands import Bot, Context
+from discord.ext.commands.errors import AppCommandError
 from django.dispatch import receiver
 
 from django_discord.py.bot.signals import bot_error, bot_ready, command_error
@@ -45,6 +46,11 @@ def on_error(sender, bot: Bot, event_method: str, event_args, event_kwargs, **kw
     """
     Add your server error handling code here!
     """
+
+
+@plugin.bot.tree.error
+async def on_tree_command_error(interaction: Interaction, error: AppCommandError):
+    interaction.response.send_message(f'{error}', ephemeral=True)
 
 
 @plugin.bot.command(description="Sync commands to servers")
@@ -124,3 +130,4 @@ class Permissions(app_commands.Group):
 # Another way to add commands
 # To add the Group to your tree...
 plugin.bot.tree.add_command(Permissions(), guild=discord.Object(id=802682445240991744))
+plugin.bot.tree.on_error()
