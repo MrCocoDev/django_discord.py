@@ -8,6 +8,8 @@ from django.apps import AppConfig
 from django.conf import settings
 from loguru import logger
 
+from django_discord.py.exceptions import MissingConfiguration
+
 
 class DjangoDiscordPyBotAutoStartConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
@@ -23,6 +25,11 @@ def do_stuff():
     asyncio.set_event_loop(asyncio.new_event_loop())
     time.sleep(3)
     channel_layer = get_channel_layer()
+    if not channel_layer:
+        raise MissingConfiguration(
+            "No channel layer was found. Have you set up daphne and django-channels correctly?"
+        )
+
     logger.info("Sending start signal")
 
     logging_config = {
