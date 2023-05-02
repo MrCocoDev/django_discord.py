@@ -130,6 +130,8 @@ Using the module directly
 More Advanced Usage
 ===================
 
+Examples on how to use your own settings files but using the library's ASGI application:
+
 ::
 
     export DJANGO_SETTINGS_MODULE='path.to.your.settings'
@@ -156,6 +158,28 @@ set up a django project normally and do:
     ]
 
 But you will be responsible for starting the `channels` workers yourself.
+
+.. warning::
+   If you do this then you must make sure to:
+    - set `DISCORD_BOT_PATH` in settings
+    - add `django_discord.py.bot` to your `INSTALLED_APPS`
+    - configure your ASGI application with a `discord-bot` channel
+    - install and setup django-channels
+
+An example of what that ASGI applcation would look like:
+
+::
+
+   application = ProtocolTypeRouter(
+       {
+           "http": django_asgi_app,
+           "channel": ChannelNameRouter(
+               {
+                   "discord_bot": consumers_module.BaseDiscordConsumer.as_asgi(),
+               }
+           ),
+       }
+   )
 
 
 Sending Your First Discord Bot Message
